@@ -9,11 +9,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [8.2, 8.3, 8.4]
-        laravel: [11, 12, 13]
-        exclude:
+        include:
           - php: 8.2
+            laravel: 11
+            testbench: 9
+          - php: 8.3
+            laravel: 11
+            testbench: 9
+          - php: 8.4
+            laravel: 11
+            testbench: 9
+          - php: 8.2
+            laravel: 12
+            testbench: 10
+          - php: 8.3
+            laravel: 12
+            testbench: 10
+          - php: 8.4
+            laravel: 12
+            testbench: 10
+          - php: 8.3
             laravel: 13
+            testbench: 11
+          - php: 8.4
+            laravel: 13
+            testbench: 11
 
     name: PHP ${{ matrix.php }} — Laravel ${{ matrix.laravel }}
 
@@ -28,7 +48,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/support:^${{ matrix.laravel }}.0" "orchestra/testbench:^${{ matrix.laravel == '11' && '9' || matrix.laravel == '12' && '10' || '10' }}.0" --no-update
+          composer require "illuminate/support:^${{ matrix.laravel }}.0" "orchestra/testbench:^${{ matrix.testbench }}.0" --no-update --dev
           composer update --prefer-dist --no-interaction
 
       - name: Run tests
